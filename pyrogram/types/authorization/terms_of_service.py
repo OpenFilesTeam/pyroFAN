@@ -18,8 +18,8 @@
 
 from typing import List
 
-from pyrogram import raw, types
-
+from pyrogram import raw
+from pyrogram import types
 from ..object import Object
 
 
@@ -52,7 +52,5 @@ class TermsOfService(Object):
             entities=[
                 types.MessageEntity._parse(None, entity, {})
                 for entity in terms_of_service.entities
-            ]
-            if terms_of_service.entities
-            else None,
+            ] if terms_of_service.entities else None
         )

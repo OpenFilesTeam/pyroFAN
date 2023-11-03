@@ -19,7 +19,8 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, types
+from pyrogram import raw
+from pyrogram import types
 
 
 class SetChatPermissions:
@@ -79,7 +80,7 @@ class SetChatPermissions:
                     change_info=not permissions.can_change_info,
                     invite_users=not permissions.can_invite_users,
                     pin_messages=not permissions.can_pin_messages,
-                ),
+                )
             )
         )
 

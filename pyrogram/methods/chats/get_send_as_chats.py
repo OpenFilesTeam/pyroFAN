@@ -19,12 +19,14 @@
 from typing import List, Union
 
 import pyrogram
-from pyrogram import raw, types
+from pyrogram import raw
+from pyrogram import types
 
 
 class GetSendAsChats:
     async def get_send_as_chats(
-        self: "pyrogram.Client", chat_id: Union[int, str]
+        self: "pyrogram.Client",
+        chat_id: Union[int, str]
     ) -> List["types.Chat"]:
         """Get the list of "send_as" chats available.
 
@@ -44,7 +46,9 @@ class GetSendAsChats:
                 print(chats)
         """
         r = await self.invoke(
-            raw.functions.channels.GetSendAs(peer=await self.resolve_peer(chat_id))
+            raw.functions.channels.GetSendAs(
+                peer=await self.resolve_peer(chat_id)
+            )
         )
 
         users = {u.id: u for u in r.users}

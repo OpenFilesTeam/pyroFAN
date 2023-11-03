@@ -17,10 +17,12 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import Union, List, Optional
 
 import pyrogram
-from pyrogram import enums, raw, types, utils
+from pyrogram import raw, enums
+from pyrogram import types
+from pyrogram import utils
 
 
 class SendCachedMedia:
@@ -39,8 +41,8 @@ class SendCachedMedia:
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
-            "types.ForceReply",
-        ] = None,
+            "types.ForceReply"
+        ] = None
     ) -> Optional["types.Message"]:
         """Send any media stored on the Telegram servers using a file_id.
 
@@ -79,7 +81,7 @@ class SendCachedMedia:
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
-
+            
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
@@ -106,25 +108,17 @@ class SendCachedMedia:
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
-                **await utils.parse_text_entities(
-                    self, caption, parse_mode, caption_entities
-                )
+                **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
             )
         )
 
         for i in r.updates:
-            if isinstance(
-                i,
-                (
-                    raw.types.UpdateNewMessage,
-                    raw.types.UpdateNewChannelMessage,
-                    raw.types.UpdateNewScheduledMessage,
-                ),
-            ):
+            if isinstance(i, (raw.types.UpdateNewMessage,
+                              raw.types.UpdateNewChannelMessage,
+                              raw.types.UpdateNewScheduledMessage)):
                 return await types.Message._parse(
-                    self,
-                    i.message,
+                    self, i.message,
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
-                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
+                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
                 )
